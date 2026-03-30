@@ -7,6 +7,7 @@ import {
   UsersIcon,
   VideoIcon,
   ZapIcon,
+  BrainCircuitIcon,
 } from "lucide-react";
 import { SignInButton } from "@clerk/clerk-react";
 
@@ -76,9 +77,9 @@ function HomePage() {
                 <CheckIcon className="size-4 text-success" />
                 Code Editor
               </div>
-              <div className="badge badge-lg badge-outline">
-                <CheckIcon className="size-4 text-success" />
-                Multi-Language
+              <div className="badge badge-lg badge-outline shadow-sm border-secondary text-secondary">
+                <SparklesIcon className="size-4 text-secondary mr-1" />
+                AI Resume Analysis
               </div>
             </div>
 
@@ -124,7 +125,7 @@ function HomePage() {
       </div>
 
       {/* FEATURES SECTION */}
-      <div className="max-w-7xl mx-auto px-4 py-20">
+      <div className="max-w-7xl mx-auto px-4 py-20 pb-32">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4">
             Everything You Need to <span className="text-primary font-mono">Succeed</span>
@@ -135,9 +136,9 @@ function HomePage() {
         </div>
 
         {/* FEATURES GRID */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Feature 1 */}
-          <div className="card bg-base-100 shadow-xl">
+          <div className="card bg-base-100 shadow-xl hover:-translate-y-2 transition-transform duration-300">
             <div className="card-body items-center text-center">
               <div className="size-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
                 <VideoIcon className="size-8 text-primary" />
@@ -150,7 +151,7 @@ function HomePage() {
           </div>
 
           {/* Feature 2 */}
-          <div className="card bg-base-100 shadow-xl">
+          <div className="card bg-base-100 shadow-xl hover:-translate-y-2 transition-transform duration-300">
             <div className="card-body items-center text-center">
               <div className="size-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
                 <Code2Icon className="size-8 text-primary" />
@@ -163,7 +164,7 @@ function HomePage() {
           </div>
 
           {/* Feature 3 */}
-          <div className="card bg-base-100 shadow-xl">
+          <div className="card bg-base-100 shadow-xl hover:-translate-y-2 transition-transform duration-300">
             <div className="card-body items-center text-center">
               <div className="size-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
                 <UsersIcon className="size-8 text-primary" />
@@ -171,6 +172,22 @@ function HomePage() {
               <h3 className="card-title">Easy Collaboration</h3>
               <p className="text-base-content/70">
                 Share your screen, discuss solutions, and learn from each other in real-time
+              </p>
+            </div>
+          </div>
+
+          {/* Feature 4: NEW AI ATS Feature */}
+          <div className="card bg-gradient-to-br from-base-100 to-secondary/10 shadow-xl border border-secondary/30 relative hover:-translate-y-2 transition-transform duration-300">
+            <div className="absolute -top-3 -right-3">
+              <div className="badge badge-secondary shadow-lg font-bold animate-pulse">Coming Soon!</div>
+            </div>
+            <div className="card-body items-center text-center">
+              <div className="size-16 bg-secondary/20 rounded-2xl flex items-center justify-center mb-4">
+                <BrainCircuitIcon className="size-8 text-secondary" />
+              </div>
+              <h3 className="card-title text-secondary">AI Resume Parsing</h3>
+              <p className="text-base-content/80 text-sm">
+                Upload your resume and the job description to get instant ATS scores, matching insights, and personalized improvement areas instantly.
               </p>
             </div>
           </div>
