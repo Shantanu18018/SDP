@@ -12,7 +12,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@clerk/clerk-react": "^5.60.0",
     "@clerk/express": "^1.7.41",
     "@stream-io/node-sdk": "^0.7.12",
     "cors": "^2.8.5",

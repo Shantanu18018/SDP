@@ -7,9 +7,12 @@ import DashboardPage from "./pages/DashboardPage";
 import ProblemPage from "./pages/ProblemPage";
 import ProblemsPage from "./pages/ProblemsPage";
 import SessionPage from "./pages/SessionPage";
+import { useSyncUser } from "./hooks/useSyncUser";
 
 function App() {
   const { isSignedIn, isLoaded } = useUser();
+
+  useSyncUser();
 
   // this will get rid of the flickering effect
   if (!isLoaded) return null;
