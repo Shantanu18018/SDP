@@ -27,15 +27,19 @@ app.use("/api/sessions", sessionRoutes);
 app.use("/api/users", userRoutes);
 
 
+app.get("/", (req, res) => {
+  res.status(200).send("API is running successfully on Vercel");
+});
+
 app.get("/health", (req, res) => {
   res.status(200).json({ msg: "api is up and running" });
 });
 
-// make our app ready for deployment
+// make our app ready for deployment (if serving static files from traditional VPS)
 if (ENV.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  app.get("/{*any}", (req, res) => {
+  app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
   });
 }
