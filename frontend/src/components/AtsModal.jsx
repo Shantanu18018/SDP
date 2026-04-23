@@ -127,10 +127,10 @@ function AtsModal() {
                      Matched Skills
                    </h3>
                    <div className="flex flex-wrap gap-2">
-                     {(result?.matched_skills || []).map(skill => (
+                     {(Array.isArray(result?.matched_skills) ? result.matched_skills : []).map(skill => (
                        <div key={skill} className="badge badge-success badge-outline">{skill}</div>
                      ))}
-                     {(!result?.matched_skills || result.matched_skills.length === 0) && <span className="text-sm text-base-content/50">No explicitly matched skills found.</span>}
+                     {(!Array.isArray(result?.matched_skills) || result.matched_skills.length === 0) && <span className="text-sm text-base-content/50">No explicitly matched skills found.</span>}
                    </div>
                    
                    <h3 className="font-bold flex items-center gap-2 mt-6">
@@ -138,10 +138,10 @@ function AtsModal() {
                      Bonus Skills
                    </h3>
                    <div className="flex flex-wrap gap-2">
-                     {(result?.bonus_skills || []).map(skill => (
+                     {(Array.isArray(result?.bonus_skills) ? result.bonus_skills : []).map(skill => (
                        <div key={skill} className="badge badge-accent badge-outline">{skill}</div>
                      ))}
-                     {(!result?.bonus_skills || result.bonus_skills.length === 0) && <span className="text-sm text-base-content/50">None identified.</span>}
+                     {(!Array.isArray(result?.bonus_skills) || result.bonus_skills.length === 0) && <span className="text-sm text-base-content/50">None identified.</span>}
                    </div>
                 </div>
 
@@ -151,10 +151,10 @@ function AtsModal() {
                      Missing Skills
                    </h3>
                    <div className="flex flex-wrap gap-2">
-                     {(result?.missing_skills || []).map(skill => (
+                     {(Array.isArray(result?.missing_skills) ? result.missing_skills : []).map(skill => (
                        <div key={skill} className="badge badge-error badge-outline">{skill}</div>
                      ))}
-                     {(!result?.missing_skills || result.missing_skills.length === 0) && <span className="text-sm text-base-content/50">Candidate meets all listed skill requirements!</span>}
+                     {(!Array.isArray(result?.missing_skills) || result.missing_skills.length === 0) && <span className="text-sm text-base-content/50">Candidate meets all listed skill requirements!</span>}
                    </div>
                 </div>
               </div>
@@ -168,11 +168,11 @@ function AtsModal() {
               </div>
               
               {/* Recommended Questions */}
-              {(result?.suggested_interview_questions || []).length > 0 && (
+              {(Array.isArray(result?.suggested_interview_questions) ? result.suggested_interview_questions : []).length > 0 && (
                 <div>
                   <h3 className="font-bold text-lg mb-4">Suggested Interview Questions</h3>
                   <ul className="space-y-3">
-                    {(result?.suggested_interview_questions || []).map((q, i) => (
+                    {(Array.isArray(result?.suggested_interview_questions) ? result.suggested_interview_questions : []).map((q, i) => (
                       <li key={i} className="flex gap-3 bg-base-200 p-4 rounded-lg">
                         <span className="font-bold text-primary">{i+1}.</span>
                         <span>{q}</span>
