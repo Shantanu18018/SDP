@@ -1,5 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
-import pdfParse from "pdf-parse";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const pdfParse = require("pdf-parse");
+
 import { ATS_SYSTEM_PROMPT } from "../lib/prompts.js";
 
 let ai = null;
