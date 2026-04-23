@@ -72,7 +72,7 @@ export const evaluateCandidate = async (req, res) => {
 
     // Call Gemini API
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-pro",
+      model: "gemini-1.5-flash",
       contents: [
         {
           role: "user",
