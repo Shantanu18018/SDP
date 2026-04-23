@@ -82,7 +82,7 @@ function AtsModal() {
                  <button className="btn btn-primary">Got it</button>
               </form>
             </div>
-          ) : result ? (
+          ) : result && result.ats_score ? (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               {/* Result View */}
               <div className="flex justify-between items-center">
