@@ -38,7 +38,11 @@ function AtsModal() {
       toast.success("Analysis complete!");
     } catch (error) {
       console.error(error);
-      toast.error(error.response?.data?.error || "Failed to analyze resume. Make sure you are logged in.");
+      const errData = error.response?.data?.error;
+      const errorMessage = typeof errData === 'string' 
+        ? errData 
+        : (errData?.message || "Failed to analyze resume. Check your backend logs.");
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
