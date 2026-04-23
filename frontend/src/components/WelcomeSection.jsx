@@ -1,5 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
-import { ArrowRightIcon, SparklesIcon, ZapIcon } from "lucide-react";
+import { ArrowRightIcon, SparklesIcon, ZapIcon, BrainCircuitIcon } from "lucide-react";
 
 function WelcomeSection({ onCreateSession }) {
   const { user } = useUser();
@@ -21,16 +21,28 @@ function WelcomeSection({ onCreateSession }) {
               Ready to level up your coding skills?
             </p>
           </div>
-          <button
-            onClick={onCreateSession}
-            className="group px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-2xl transition-all duration-200 hover:opacity-90"
-          >
-            <div className="flex items-center gap-3 text-white font-bold text-lg">
-              <ZapIcon className="w-6 h-6" />
-              <span>Create Session</span>
-              <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={() => document.getElementById('ats_modal').showModal()}
+              className="group px-8 py-4 bg-base-200 border border-secondary/30 rounded-2xl transition-all duration-200 hover:bg-base-300 shadow-sm"
+            >
+              <div className="flex items-center gap-3 text-secondary font-bold text-lg">
+                <BrainCircuitIcon className="w-6 h-6" />
+                <span>AI Resume Analysis</span>
+              </div>
+            </button>
+
+            <button
+              onClick={onCreateSession}
+              className="group px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-2xl transition-all duration-200 hover:opacity-90 shadow-sm"
+            >
+              <div className="flex items-center gap-3 text-white font-bold text-lg">
+                <ZapIcon className="w-6 h-6" />
+                <span>Create Session</span>
+                <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+          </div>
         </div>
       </div>
     </div>

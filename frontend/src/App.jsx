@@ -8,6 +8,7 @@ import ProblemPage from "./pages/ProblemPage";
 import ProblemsPage from "./pages/ProblemsPage";
 import SessionPage from "./pages/SessionPage";
 import { useSyncUser } from "./hooks/useSyncUser";
+import AtsModal from "./components/AtsModal";
 
 function App() {
   const { isSignedIn, isLoaded } = useUser();
@@ -29,6 +30,7 @@ function App() {
       </Routes>
 
       <Toaster toastOptions={{ duration: 3000 }} />
+      <AtsModal />
     </>
   );
 }

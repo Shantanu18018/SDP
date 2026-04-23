@@ -177,9 +177,12 @@ function HomePage() {
           </div>
 
           {/* Feature 4: NEW AI ATS Feature */}
-          <div className="card bg-gradient-to-br from-base-100 to-secondary/10 shadow-xl border border-secondary/30 relative hover:-translate-y-2 transition-transform duration-300">
+          <div 
+            onClick={() => document.getElementById('ats_modal').showModal()}
+            className="card bg-gradient-to-br from-base-100 to-secondary/10 shadow-xl border border-secondary/30 relative hover:-translate-y-2 transition-transform duration-300 cursor-pointer"
+          >
             <div className="absolute -top-3 -right-3">
-              <div className="badge badge-secondary shadow-lg font-bold animate-pulse">Coming Soon!</div>
+              <div className="badge badge-secondary shadow-lg font-bold animate-pulse">New!</div>
             </div>
             <div className="card-body items-center text-center">
               <div className="size-16 bg-secondary/20 rounded-2xl flex items-center justify-center mb-4">
