@@ -10,6 +10,7 @@ import { inngest, functions } from "./lib/inngest.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import sessionRoutes from "./routes/sessionRoute.js";
 import userRoutes from "./routes/userRoutes.js";
+import atsRoutes from "./routes/ats.js";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/api/inngest", serve({ client: inngest, functions }));
 app.use("/api/chat", chatRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/ats", atsRoutes);
 
 
 app.get("/", (req, res) => {
