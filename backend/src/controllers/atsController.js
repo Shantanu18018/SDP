@@ -6,7 +6,9 @@ import { ATS_SYSTEM_PROMPT } from "../lib/prompts.js";
 
 let ai = null;
 if (process.env.GEMINI_API_KEY) {
-  ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  // Sanitize API key to remove invisible unicode characters (like U+202C) copied from web dashboards
+  const sanitizedKey = process.env.GEMINI_API_KEY.replace(/[^\x20-\x7E]/g, '');
+  ai = new GoogleGenAI({ apiKey: sanitizedKey });
 }
 
 export const evaluateCandidate = async (req, res) => {
