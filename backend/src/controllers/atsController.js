@@ -1,5 +1,4 @@
 import { GoogleGenAI } from "@google/genai";
-import PDFParser from "pdf2json";
 
 
 import { ATS_SYSTEM_PROMPT } from "../lib/prompts.js";
@@ -22,16 +21,6 @@ export const evaluateCandidate = async (req, res) => {
     if (!jobDescription) {
       return res.status(400).json({ error: "Job description is required." });
     }
-
-    // Extract text from PDF
-    const resumeText = await new Promise((resolve, reject) => {
-      const pdfParser = new PDFParser(null, 1);
-      pdfParser.on("pdfParser_dataError", errData => reject(errData.parserError));
-      pdfParser.on("pdfParser_dataReady", () => {
-        resolve(pdfParser.getRawTextContent());
-      });
-      pdfParser.parseBuffer(resumeFile.buffer);
-    });
 
     // If no API key, return mock response for testing UI
     if (!ai) {
@@ -80,14 +69,22 @@ export const evaluateCandidate = async (req, res) => {
       });
     }
 
-    // Call Gemini API
+    const pdfBase64 = resumeFile.buffer.toString("base64");
+
+    // Call Gemini API natively with the PDF file
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
       contents: [
         {
           role: "user",
           parts: [
-            { text: `RESUME TEXT:\n${resumeText}\n\nJOB DESCRIPTION TEXT:\n${jobDescription}` }
+            {
+              inlineData: {
+                data: pdfBase64,
+                mimeType: "application/pdf"
+              }
+            },
+            { text: `\n\nJOB DESCRIPTION TEXT:\n${jobDescription}` }
           ]
         }
       ],
