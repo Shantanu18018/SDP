@@ -95,12 +95,14 @@ export const evaluateCandidate = async (req, res) => {
       }
     });
 
-    const resultText = response.text;
+    let resultText = response.text;
+    resultText = resultText.replace(/```json\n?|```/g, '').trim();
     const parsedResult = JSON.parse(resultText);
 
     res.status(200).json(parsedResult);
   } catch (error) {
     console.error("Error in evaluateCandidate:", error);
-    res.status(500).json({ error: "Failed to evaluate candidate", details: error.message });
+    const details = error?.message || (typeof error === 'object' ? JSON.stringify(error, Object.getOwnPropertyNames(error)) : String(error));
+    res.status(500).json({ error: "Failed to evaluate candidate", details });
   }
 };
