@@ -86,8 +86,8 @@ function AtsModal() {
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               {/* Result View */}
               <div className="flex justify-between items-center">
-                <h2 className="text-3xl font-black">{result.candidate_name}</h2>
-                <div className="badge badge-primary badge-lg">{result.job_title_applied}</div>
+                <h2 className="text-3xl font-black">{result?.candidate_name || "Unknown Candidate"}</h2>
+                <div className="badge badge-primary badge-lg">{result?.job_title_applied || "Role"}</div>
               </div>
 
               {/* Scores */}
@@ -96,12 +96,12 @@ function AtsModal() {
                   <div className="card-body">
                     <h3 className="card-title text-sm uppercase text-base-content/50">ATS Score</h3>
                     <div className="flex items-end gap-4">
-                      <div className="text-6xl font-black text-primary">{result.ats_score.score}</div>
+                      <div className="text-6xl font-black text-primary">{result?.ats_score?.score || 0}</div>
                       <div className="pb-2">
-                        <div className="badge badge-primary">{result.ats_score.label}</div>
+                        <div className="badge badge-primary">{result?.ats_score?.label || "N/A"}</div>
                       </div>
                     </div>
-                    <p className="text-sm mt-2">{result.ats_score.reasoning}</p>
+                    <p className="text-sm mt-2">{result?.ats_score?.reasoning}</p>
                   </div>
                 </div>
                 
@@ -109,12 +109,12 @@ function AtsModal() {
                   <div className="card-body">
                     <h3 className="card-title text-sm uppercase text-base-content/50">Job Fit</h3>
                     <div className="flex items-end gap-4">
-                      <div className="text-6xl font-black text-secondary">{result.job_fit.score}</div>
+                      <div className="text-6xl font-black text-secondary">{result?.job_fit?.score || 0}</div>
                       <div className="pb-2">
-                        <div className="badge badge-secondary">{result.job_fit.label}</div>
+                        <div className="badge badge-secondary">{result?.job_fit?.label || "N/A"}</div>
                       </div>
                     </div>
-                    <p className="text-sm mt-2">{result.job_fit.reasoning}</p>
+                    <p className="text-sm mt-2">{result?.job_fit?.reasoning}</p>
                   </div>
                 </div>
               </div>
@@ -127,10 +127,10 @@ function AtsModal() {
                      Matched Skills
                    </h3>
                    <div className="flex flex-wrap gap-2">
-                     {result.matched_skills.map(skill => (
+                     {(result?.matched_skills || []).map(skill => (
                        <div key={skill} className="badge badge-success badge-outline">{skill}</div>
                      ))}
-                     {result.matched_skills.length === 0 && <span className="text-sm text-base-content/50">No explicitly matched skills found.</span>}
+                     {(!result?.matched_skills || result.matched_skills.length === 0) && <span className="text-sm text-base-content/50">No explicitly matched skills found.</span>}
                    </div>
                    
                    <h3 className="font-bold flex items-center gap-2 mt-6">
@@ -138,10 +138,10 @@ function AtsModal() {
                      Bonus Skills
                    </h3>
                    <div className="flex flex-wrap gap-2">
-                     {result.bonus_skills.map(skill => (
+                     {(result?.bonus_skills || []).map(skill => (
                        <div key={skill} className="badge badge-accent badge-outline">{skill}</div>
                      ))}
-                     {result.bonus_skills.length === 0 && <span className="text-sm text-base-content/50">None identified.</span>}
+                     {(!result?.bonus_skills || result.bonus_skills.length === 0) && <span className="text-sm text-base-content/50">None identified.</span>}
                    </div>
                 </div>
 
@@ -151,10 +151,10 @@ function AtsModal() {
                      Missing Skills
                    </h3>
                    <div className="flex flex-wrap gap-2">
-                     {result.missing_skills.map(skill => (
+                     {(result?.missing_skills || []).map(skill => (
                        <div key={skill} className="badge badge-error badge-outline">{skill}</div>
                      ))}
-                     {result.missing_skills.length === 0 && <span className="text-sm text-base-content/50">Candidate meets all listed skill requirements!</span>}
+                     {(!result?.missing_skills || result.missing_skills.length === 0) && <span className="text-sm text-base-content/50">Candidate meets all listed skill requirements!</span>}
                    </div>
                 </div>
               </div>
@@ -164,15 +164,15 @@ function AtsModal() {
               {/* Interviewer Verdict */}
               <div className="bg-primary/10 border border-primary/20 rounded-xl p-6">
                 <h3 className="font-bold text-lg text-primary mb-2">Interviewer Verdict</h3>
-                <p className="text-base-content/90">{result.interviewer_verdict}</p>
+                <p className="text-base-content/90">{result?.interviewer_verdict || "No verdict provided."}</p>
               </div>
               
               {/* Recommended Questions */}
-              {result.suggested_interview_questions?.length > 0 && (
+              {(result?.suggested_interview_questions || []).length > 0 && (
                 <div>
                   <h3 className="font-bold text-lg mb-4">Suggested Interview Questions</h3>
                   <ul className="space-y-3">
-                    {result.suggested_interview_questions.map((q, i) => (
+                    {(result?.suggested_interview_questions || []).map((q, i) => (
                       <li key={i} className="flex gap-3 bg-base-200 p-4 rounded-lg">
                         <span className="font-bold text-primary">{i+1}.</span>
                         <span>{q}</span>
