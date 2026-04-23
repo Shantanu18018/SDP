@@ -1,7 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const pdfParse = require("pdf-parse");
+import PDFParser from "pdf2json";
+
 
 import { ATS_SYSTEM_PROMPT } from "../lib/prompts.js";
 
@@ -23,8 +22,14 @@ export const evaluateCandidate = async (req, res) => {
     }
 
     // Extract text from PDF
-    const pdfData = await pdfParse(resumeFile.buffer);
-    const resumeText = pdfData.text;
+    const resumeText = await new Promise((resolve, reject) => {
+      const pdfParser = new PDFParser(null, 1);
+      pdfParser.on("pdfParser_dataError", errData => reject(errData.parserError));
+      pdfParser.on("pdfParser_dataReady", () => {
+        resolve(pdfParser.getRawTextContent());
+      });
+      pdfParser.parseBuffer(resumeFile.buffer);
+    });
 
     // If no API key, return mock response for testing UI
     if (!ai) {
