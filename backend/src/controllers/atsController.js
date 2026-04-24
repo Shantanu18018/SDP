@@ -1,10 +1,11 @@
-import Groq from "groq-sdk";
+import { GoogleGenAI } from "@google/genai";
 import { ATS_SYSTEM_PROMPT } from "../lib/prompts.js";
 
 let ai = null;
-if (process.env.GROQ_API_KEY) {
-  // Initialize Groq client
-  ai = new Groq({ apiKey: process.env.GROQ_API_KEY });
+if (process.env.GEMINI_API_KEY) {
+  // Sanitize API key to remove invisible unicode characters (like U+202C) copied from web dashboards
+  const sanitizedKey = process.env.GEMINI_API_KEY.replace(/[^\x20-\x7E]/g, '');
+  ai = new GoogleGenAI({ apiKey: sanitizedKey });
 }
 
 export const evaluateCandidate = async (req, res) => {
@@ -21,7 +22,7 @@ export const evaluateCandidate = async (req, res) => {
 
     // If no API key, return mock response for testing UI
     if (!ai) {
-      console.warn("GROQ_API_KEY is not set. Returning mock ATS evaluation.");
+      console.warn("GEMINI_API_KEY is not set. Returning mock ATS evaluation.");
       return res.status(200).json({
         candidate_name: "Mock Candidate",
         job_title_applied: "Software Engineer",
@@ -66,38 +67,33 @@ export const evaluateCandidate = async (req, res) => {
       });
     }
 
-    // Extract text from PDF buffer safely
-    // We MUST inject globals and dynamically require pdf-parse INSIDE the function.
-    // If placed at the top level, Vercel's bundler hoists the require and crashes the entire Serverless Node process.
-    global.DOMMatrix = global.DOMMatrix || class {};
-    global.ImageData = global.ImageData || class {};
-    global.Path2D = global.Path2D || class {};
-    
-    const { createRequire } = await import('module');
-    const require = createRequire(import.meta.url);
-    const pdfParse = require('pdf-parse');
+    const pdfBase64 = resumeFile.buffer.toString("base64");
 
-    const pdfData = await pdfParse(resumeFile.buffer);
-    const resumeText = pdfData.text;
-
-    // Call Groq API
-    const chatCompletion = await ai.chat.completions.create({
-      messages: [
-        {
-          role: "system",
-          content: ATS_SYSTEM_PROMPT
-        },
+    // Call Gemini API natively with the PDF file
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: [
         {
           role: "user",
-          content: `RESUME TEXT:\n${resumeText}\n\nJOB DESCRIPTION TEXT:\n${jobDescription}`
+          parts: [
+            {
+              inlineData: {
+                data: pdfBase64,
+                mimeType: "application/pdf"
+              }
+            },
+            { text: `\n\nJOB DESCRIPTION TEXT:\n${jobDescription}` }
+          ]
         }
       ],
-      model: "llama-3.3-70b-versatile",
-      temperature: 0.1,
-      response_format: { type: "json_object" },
+      config: {
+        systemInstruction: ATS_SYSTEM_PROMPT,
+        responseMimeType: "application/json",
+      }
     });
 
-    const resultText = chatCompletion.choices[0]?.message?.content || "{}";
+    let resultText = response.text;
+    resultText = resultText.replace(/```json\n?|```/g, '').trim();
     const parsedResult = JSON.parse(resultText);
 
     res.status(200).json(parsedResult);
