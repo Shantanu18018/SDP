@@ -1,12 +1,4 @@
 import Groq from "groq-sdk";
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const pdfParse = require('pdf-parse');
-
-// Mock browser globals required by pdf-parse's internal pdf.js to prevent Vercel crashes
-global.DOMMatrix = class {};
-global.ImageData = class {};
-
 import { ATS_SYSTEM_PROMPT } from "../lib/prompts.js";
 
 let ai = null;
@@ -74,7 +66,17 @@ export const evaluateCandidate = async (req, res) => {
       });
     }
 
-    // Extract text from PDF buffer safely using mocked pdf-parse
+    // Extract text from PDF buffer safely
+    // We MUST inject globals and dynamically require pdf-parse INSIDE the function.
+    // If placed at the top level, Vercel's bundler hoists the require and crashes the entire Serverless Node process.
+    global.DOMMatrix = global.DOMMatrix || class {};
+    global.ImageData = global.ImageData || class {};
+    global.Path2D = global.Path2D || class {};
+    
+    const { createRequire } = await import('module');
+    const require = createRequire(import.meta.url);
+    const pdfParse = require('pdf-parse');
+
     const pdfData = await pdfParse(resumeFile.buffer);
     const resumeText = pdfData.text;
 
