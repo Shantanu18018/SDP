@@ -18,9 +18,11 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "groq-sdk": "^1.1.2",
     "inngest": "^3.44.3",
     "mongoose": "^8.19.1",
     "multer": "^2.1.1",
+    "pdf-parse": "^2.4.5",
     "stream-chat": "^9.24.0"
   },
   "devDependencies": {
