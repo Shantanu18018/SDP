@@ -39,9 +39,17 @@ function AtsModal() {
     } catch (error) {
       console.error(error);
       const errData = error.response?.data;
-      const errorMessage = typeof errData === 'string' 
-        ? errData 
-        : (errData?.error || errData?.message || "Failed to analyze resume. Check your backend logs.") + (errData?.details ? ` - ${errData.details}` : '');
+      let errorMessage = "Failed to analyze resume.";
+      if (typeof errData === 'string') {
+        errorMessage = errData;
+      } else if (errData) {
+        const primaryError = errData.error || errData.message || "Backend Error";
+        const primaryErrorStr = typeof primaryError === 'object' ? JSON.stringify(primaryError) : primaryError;
+        const detailsStr = errData.details ? (typeof errData.details === 'object' ? JSON.stringify(errData.details) : errData.details) : '';
+        errorMessage = `${primaryErrorStr}${detailsStr ? ` - ${detailsStr}` : ''}`;
+      } else {
+        errorMessage = error.message || "Network Error or Server Crash";
+      }
       toast.error(errorMessage);
     } finally {
       setLoading(false);
