@@ -1,5 +1,7 @@
 import Groq from "groq-sdk";
 import { ATS_SYSTEM_PROMPT } from "../lib/prompts.js";
+import "../lib/globals.js";
+import pdfParse from "pdf-parse";
 
 let ai = null;
 if (process.env.GROQ_API_KEY) {
@@ -25,15 +27,15 @@ export const evaluateCandidate = async (req, res) => {
       return res.status(200).json({
         candidate_name: "Mock Candidate",
         job_title_applied: "Software Engineer",
-        ats_score: { 
-          score: 85, 
-          label: "Good", 
-          reasoning: "The resume shows strong alignment with the core requirements but lacks some specific cloud experience." 
+        ats_score: {
+          score: 85,
+          label: "Good",
+          reasoning: "The resume shows strong alignment with the core requirements but lacks some specific cloud experience."
         },
-        job_fit: { 
-          score: 80, 
-          label: "Strong Fit", 
-          reasoning: "Overall solid match for the role, with good background in full-stack development." 
+        job_fit: {
+          score: 80,
+          label: "Strong Fit",
+          reasoning: "Overall solid match for the role, with good background in full-stack development."
         },
         expertise_areas: [
           { area: "Frontend Development", level: "Advanced", evidence: "Built complex React applications with state management." },
@@ -67,16 +69,6 @@ export const evaluateCandidate = async (req, res) => {
     }
 
     // Extract text from PDF buffer safely
-    // We MUST inject globals and dynamically require pdf-parse INSIDE the function.
-    // If placed at the top level, Vercel's bundler hoists the require and crashes the entire Serverless Node process.
-    global.DOMMatrix = global.DOMMatrix || class {};
-    global.ImageData = global.ImageData || class {};
-    global.Path2D = global.Path2D || class {};
-    
-    const { createRequire } = await import('module');
-    const require = createRequire(import.meta.url);
-    const pdfParse = require('pdf-parse');
-
     const pdfData = await pdfParse(resumeFile.buffer);
     const resumeText = pdfData.text;
 
