@@ -202,14 +202,14 @@ function AtsModal() {
           ) : (
             /* Input Form */
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="form-control">
-                <label className="label cursor-pointer justify-start gap-4 p-6 border-2 border-dashed border-base-300 rounded-2xl hover:border-primary hover:bg-base-200/50 transition-colors">
-                  <div className="size-14 bg-primary/10 rounded-xl flex items-center justify-center">
-                    {resume ? <FileTextIcon className="size-7 text-primary" /> : <UploadIcon className="size-7 text-primary" />}
+              <div className="form-control w-full">
+                <label className="label cursor-pointer flex-col justify-center items-center gap-3 p-8 border-2 border-dashed border-base-300 rounded-2xl hover:border-primary hover:bg-base-200/50 transition-colors w-full">
+                  <div className="size-16 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                    {resume ? <FileTextIcon className="size-8 text-primary" /> : <UploadIcon className="size-8 text-primary" />}
                   </div>
-                  <div>
-                    <span className="label-text text-lg font-bold block">Upload Resume (PDF)</span>
-                    <span className="text-sm text-base-content/60">
+                  <div className="text-center">
+                    <span className="text-lg font-bold block">{resume ? "Resume Selected" : "Upload Resume (PDF)"}</span>
+                    <span className="text-sm text-base-content/60 mt-1 block">
                       {resume ? resume.name : "Click to select a file or drag and drop"}
                     </span>
                   </div>
@@ -222,12 +222,12 @@ function AtsModal() {
                 </label>
               </div>
 
-              <div className="form-control">
+              <div className="form-control w-full">
                 <label className="label">
-                  <span className="label-text font-bold">Job Description</span>
+                  <span className="label-text font-bold text-lg">Job Description</span>
                 </label>
                 <textarea 
-                  className="textarea textarea-bordered h-48 focus:border-secondary focus:ring-1 focus:ring-secondary text-base" 
+                  className="textarea textarea-bordered w-full h-48 focus:border-secondary focus:ring-1 focus:ring-secondary text-base resize-none" 
                   placeholder="Paste the full job description here..."
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}

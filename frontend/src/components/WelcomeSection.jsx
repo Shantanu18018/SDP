@@ -24,9 +24,9 @@ function WelcomeSection({ onCreateSession }) {
           <div className="flex gap-4">
             <button
               onClick={() => document.getElementById('ats_modal').showModal()}
-              className="group px-8 py-4 bg-base-200 border border-secondary/30 rounded-2xl transition-all duration-200 hover:bg-base-300 shadow-sm"
+              className="group px-8 py-4 bg-gradient-to-r from-secondary to-accent rounded-2xl transition-all duration-200 hover:opacity-90 shadow-sm"
             >
-              <div className="flex items-center gap-3 text-secondary font-bold text-lg">
+              <div className="flex items-center gap-3 text-white font-bold text-lg">
                 <BrainCircuitIcon className="w-6 h-6" />
                 <span>AI Resume Analysis</span>
               </div>
