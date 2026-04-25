@@ -1,7 +1,6 @@
 import Groq from "groq-sdk";
 import { ATS_SYSTEM_PROMPT } from "../lib/prompts.js";
-import "../lib/globals.js";
-import pdfParse from "pdf-parse";
+import PDFParser from "pdf2json";
 
 let ai = null;
 if (process.env.GROQ_API_KEY) {
@@ -68,9 +67,17 @@ export const evaluateCandidate = async (req, res) => {
       });
     }
 
-    // Extract text from PDF buffer safely
-    const pdfData = await pdfParse(resumeFile.buffer);
-    const resumeText = pdfData.text;
+    // Extract text from PDF buffer using pdf2json
+    const resumeText = await new Promise((resolve, reject) => {
+      const pdfParser = new PDFParser(null, 1);
+      
+      pdfParser.on("pdfParser_dataError", errData => reject(errData.parserError));
+      pdfParser.on("pdfParser_dataReady", pdfData => {
+          resolve(pdfParser.getRawTextContent());
+      });
+      
+      pdfParser.parseBuffer(resumeFile.buffer);
+    });
 
     // Call Groq API
     const chatCompletion = await ai.chat.completions.create({
