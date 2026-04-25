@@ -1,5 +1,6 @@
 import Groq from "groq-sdk";
 import { ATS_SYSTEM_PROMPT } from "../lib/prompts.js";
+import "../lib/globals.js";
 import pdfParse from "pdf-parse";
 
 let ai = null;
